@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Document, Model } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { Music, MusicDocument } from './entities/music.entity';
@@ -33,7 +33,8 @@ export class MusicService {
     return this.musicModel.findByIdAndUpdate(id, updateMusicDto).exec();
   }
 
-  async remove(id: number) {
-    return this.musicModel.remove(id).exec();
+  // TODO: Ajustar o método delete que está deletando entidades erradas
+  async remove(id: string) {
+    return this.musicModel.deleteOne(new mongoose.Types.ObjectId(id)).exec();
   }
 }

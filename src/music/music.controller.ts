@@ -48,6 +48,6 @@ export class MusicController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.musicService.remove(+id);
+    return this.musicService.remove(id);
   }
 }

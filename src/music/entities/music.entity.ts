@@ -6,22 +6,22 @@ export type MusicDocument = Music & Document;
 @Schema()
 export class Music {
   @Prop()
-  _titulo: string;
+  titulo: string;
 
   @Prop()
-  _autor: string;
+  autor: string;
 
   @Prop()
-  _descricao: string;
+  descricao: string;
 
   @Prop()
-  _url: string;
+  url: string;
 
   @Prop()
-  _tambnail: string;
+  tambnail: string;
 
   @Prop()
-  _tempo: string;
+  tempo: string;
 }
 
 export const MusicSchema = SchemaFactory.createForClass(Music);
