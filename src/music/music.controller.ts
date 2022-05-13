@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import MongooseClassSerializerInterceptor from 'src/common/mongooseClassSerializer.interceptor';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
+import { Music } from './entities/music.entity';
 import { MusicService } from './music.service';
 
 @Controller('music')
+@UseInterceptors(MongooseClassSerializerInterceptor(Music))
 @ApiTags('musica')
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
