@@ -7,6 +7,7 @@ export type MusicDocument = Music & Document;
 @Schema()
 export class Music {
   constructor(
+    musicId: string,
     titulo: string,
     autor: string,
     descricao: string,
@@ -14,6 +15,7 @@ export class Music {
     tambnail: string,
     tempo: string,
   ) {
+    this.musicId = musicId;
     this.titulo = titulo;
     this.autor = autor;
     this.descricao = descricao;
@@ -24,6 +26,9 @@ export class Music {
 
   @Transform(({ value }) => value.toString())
   _id: string;
+
+  @Prop({ unique: true })
+  musicId: string;
 
   @Prop()
   titulo: string;

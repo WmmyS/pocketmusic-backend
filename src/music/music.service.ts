@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 import { Search } from 'src/common/google-api/search';
+import { Regexp } from 'src/common/regexp';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { Music, MusicDocument } from './entities/music.entity';
@@ -16,28 +17,34 @@ export class MusicService {
   async search(search: string): Promise<any[]> {
     const result = await Search.search(search, 10);
     const items: Array<any> = [];
-
     result.items.forEach(function (item) {
       if (
         item.pagemap.videoobject !== [] ||
-        item.pagemap.videoobject[0].genre === 'Music' ||
-        !item.formattedUrl.startsWith('https://www.youtube.com/watch')
+        item.pagemap.videoobject[0].genre === 'Music'
       ) {
-        const song = new Music(
-          item.title,
-          typeof item.pagemap.person !== 'undefined'
-            ? item.pagemap.person[0].name
-            : null,
-          typeof item.pagemap.videoobject !== 'undefined'
-            ? item.pagemap.videoobject[0].description
-            : null,
-          item.formattedUrl,
-          typeof item.pagemap.videoobject !== 'undefined'
-            ? item.pagemap.videoobject[0].thumbnailurl
-            : null,
-          item.kind,
-        );
-        items.push(song);
+        if (
+          item.pagemap.videoobject !== [] ||
+          item.pagemap.videoobject[0] !== 'undefined'
+        ) {
+          if (item.formattedUrl.startsWith('https://www.youtube.com/watch')) {
+            const song = new Music(
+              item.pagemap.videoobject[0].videoid,
+              Regexp.regexpVideoTitle(item.title),
+              typeof item.pagemap.person !== 'undefined'
+                ? item.pagemap.person[0].name
+                : null,
+              typeof item.pagemap.videoobject !== 'undefined'
+                ? item.pagemap.videoobject[0].description
+                : null,
+              item.formattedUrl,
+              typeof item.pagemap.videoobject !== 'undefined'
+                ? item.pagemap.videoobject[0].thumbnailurl
+                : null,
+              item.kind,
+            );
+            items.push(song);
+          }
+        }
       }
     });
     return items;
