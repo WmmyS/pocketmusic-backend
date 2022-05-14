@@ -22,6 +22,11 @@ import { MusicService } from './music.service';
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
+  @Get(':search')
+  search(@Param('search') search: string): Promise<any> {
+    return this.musicService.search(search);
+  }
+
   @Post()
   create(@Body() createMusicDto: CreateMusicDto) {
     return this.musicService.create(createMusicDto);

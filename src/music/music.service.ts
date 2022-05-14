@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
+import { Search } from 'src/common/google-api/search';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import { Music, MusicDocument } from './entities/music.entity';
@@ -11,6 +12,19 @@ export class MusicService {
     @InjectModel(Music.name)
     private musicModel: Model<MusicDocument>,
   ) {}
+
+  async search(search: string): Promise<any> {
+    const result = await Search.search(search, 10);
+    const items: Array<any> = [];
+    result.items.forEach(function (item) {
+      let music = new Music();
+      music.autor = item.title;
+      music.descricao = item.snippet;
+      music.url = item.link;
+      items.push(item);
+    });
+    return items;
+  }
 
   async create(createMusicDto: CreateMusicDto): Promise<Music> {
     const createdMusic = await new this.musicModel(createMusicDto);
