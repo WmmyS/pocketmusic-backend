@@ -40,9 +40,17 @@ export class MusicService {
               typeof item.pagemap.videoobject !== 'undefined'
                 ? item.pagemap.videoobject[0].thumbnailurl
                 : null,
-              item.kind,
+              typeof item.pagemap.videoobject !== 'undefined'
+                ? Regexp.regexpDuration(item.pagemap.videoobject[0].duration)
+                : null,
             );
-            items.push(song);
+            const timer = song.tempo.split(':');
+            if (
+              Number.parseInt(timer[0]) > 0 &&
+              Number.parseInt(timer[1]) > 29
+            ) {
+              items.push(song);
+            }
           }
         }
       }
