@@ -6,6 +6,22 @@ export type MusicDocument = Music & Document;
 
 @Schema()
 export class Music {
+  constructor(
+    titulo: string,
+    autor: string,
+    descricao: string,
+    url: string,
+    tambnail: string,
+    tempo: string,
+  ) {
+    this.titulo = titulo;
+    this.autor = autor;
+    this.descricao = descricao;
+    this.url = url;
+    this.tambnail = tambnail;
+    this.tempo = tempo;
+  }
+
   @Transform(({ value }) => value.toString())
   _id: string;
 

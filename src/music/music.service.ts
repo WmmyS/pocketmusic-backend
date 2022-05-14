@@ -13,15 +13,32 @@ export class MusicService {
     private musicModel: Model<MusicDocument>,
   ) {}
 
-  async search(search: string): Promise<any> {
+  async search(search: string): Promise<any[]> {
     const result = await Search.search(search, 10);
     const items: Array<any> = [];
+
     result.items.forEach(function (item) {
-      let music = new Music();
-      music.autor = item.title;
-      music.descricao = item.snippet;
-      music.url = item.link;
-      items.push(item);
+      if (
+        item.pagemap.videoobject !== [] ||
+        item.pagemap.videoobject[0].genre === 'Music' ||
+        !item.formattedUrl.startsWith('https://www.youtube.com/watch')
+      ) {
+        const song = new Music(
+          item.title,
+          typeof item.pagemap.person !== 'undefined'
+            ? item.pagemap.person[0].name
+            : null,
+          typeof item.pagemap.videoobject !== 'undefined'
+            ? item.pagemap.videoobject[0].description
+            : null,
+          item.formattedUrl,
+          typeof item.pagemap.videoobject !== 'undefined'
+            ? item.pagemap.videoobject[0].thumbnailurl
+            : null,
+          item.kind,
+        );
+        items.push(song);
+      }
     });
     return items;
   }
