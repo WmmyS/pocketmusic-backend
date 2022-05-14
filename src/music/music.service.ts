@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 import { Search } from 'src/common/google-api/search';
@@ -15,7 +15,7 @@ export class MusicService {
   ) {}
 
   async search(search: string): Promise<any[]> {
-    const result = await Search.search(search, 10);
+    const result = await Search.search(search);
     const items: Array<any> = [];
     result.items.forEach(function (item) {
       if (
@@ -47,6 +47,7 @@ export class MusicService {
             const timer = song.tempo.split(':');
             if (
               Number.parseInt(timer[0]) > 0 &&
+              Number.parseInt(timer[0]) < 60 &&
               Number.parseInt(timer[1]) > 29
             ) {
               items.push(song);
@@ -72,23 +73,28 @@ export class MusicService {
   }
 
   async findOne(id: string) {
-    return this.musicModel.findById(id).exec();
+    const music = await this.musicModel.findOne({ musicId: id }).exec();
+    if (typeof music !== 'undefined' && music !== null) {
+      return music;
+    } else {
+      throw new NotFoundException('Registro não encontrado');
+    }
   }
 
   async update(id: string, updateMusicDto: UpdateMusicDto) {
     return this.musicModel.findByIdAndUpdate(id, updateMusicDto).exec();
   }
 
-  // TODO: Ajustar o método delete que está deletando entidades erradas
   async remove(id: string) {
+    const deleted = await this.findOne(id);
     return await this.musicModel
-      .findOneAndDelete({ _id: id })
+      .findOneAndDelete({ musicId: deleted.musicId })
       .exec()
       .then(() => {
         return 'Delected Successfuly';
       })
       .catch(() => {
-        return new BadRequestException('Record not found');
+        return new NotFoundException('Registro não encontrado');
       });
   }
 }

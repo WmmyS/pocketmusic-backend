@@ -22,7 +22,7 @@ import { MusicService } from './music.service';
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
-  @Get(':search')
+  @Get('search/:search')
   search(@Param('search') search: string): Promise<any> {
     return this.musicService.search(search);
   }
@@ -37,26 +37,26 @@ export class MusicController {
     return this.musicService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':musicId')
+  async findOne(@Param('musicId') id: string) {
     return this.musicService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':musicId')
   updateMapped(
-    @Param('id') id: string,
+    @Param('musicId') id: string,
     @Body() updateMusicDto: UpdateMusicDto,
   ) {
     return this.musicService.update(id, updateMusicDto);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateMusicDto: UpdateMusicDto) {
+  @Put(':musicId')
+  update(@Param('musicId') id: string, @Body() updateMusicDto: UpdateMusicDto) {
     return this.musicService.update(id, updateMusicDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(':musicId')
+  remove(@Param('musicId') id: string) {
     return this.musicService.remove(id);
   }
 }
