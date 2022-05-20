@@ -10,8 +10,7 @@ import { MusicModule } from './music/music.module';
     MusicModule,
     DataBaseModule,
     ConfigModule.forRoot({
-      envFilePath: `./config/${process.env.NODE_ENV}.env`,
-      isGlobal: true,
+      ignoreEnvFile: true,
     }),
   ],
   controllers: [AppController],

@@ -3,8 +3,8 @@ import { google } from 'googleapis';
 export class Search {
   static async search(query: string) {
     const response = await google.customsearch('v1').cse.list({
-      auth: 'AIzaSyCyP-1Wc8KiCaT6rWr2Cgr2fgNvj6zpwWA',
-      cx: '01d8164ebea01ef0f',
+      auth: process.env.GOOGLE_API_KEY,
+      cx: process.env.GOOGLE_ENG_ID,
       q: query,
     });
 

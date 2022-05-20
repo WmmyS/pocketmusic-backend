@@ -8,7 +8,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Pocket Music')
-    .setDescription('API de streameing e download de músicas.')
+    .setDescription('API de streaming e download de músicas.')
     .setVersion('1.0')
     .addTag('Pocket-Music-Tag')
     .build();
