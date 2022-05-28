@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { databaseProviders } from './database.providers';
 
 @Module({
-  imports: [MongooseModule.forRoot(process.env.CONNECTIONSTRING)],
+  providers: [...databaseProviders],
+  exports: [...databaseProviders],
 })
-export class DataBaseModule {}
+export class DatabaseModule {}

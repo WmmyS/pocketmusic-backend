@@ -33,10 +33,12 @@
     "dotenv": "^16.0.1",
     "googleapis": "^100.0.0",
     "mongoose": "^6.3.3",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.3.0",
+    "typeorm": "^0.3.6",
     "ytdl-core": "^4.11.0",
     "ytsr": "^3.8.0"
   },

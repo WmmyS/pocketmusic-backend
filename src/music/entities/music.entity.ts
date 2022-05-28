@@ -1,13 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Transform } from 'class-transformer';
-import { Document } from 'mongoose';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-export type MusicDocument = Music & Document;
-
-@Schema()
+@Entity('music')
 export class Music {
   constructor(
-    musicId: string,
+    id: string,
     titulo: string,
     autor: string,
     descricao: string,
@@ -15,7 +11,7 @@ export class Music {
     tambnail: string,
     tempo: string,
   ) {
-    this.musicId = musicId;
+    this.id = id;
     this.titulo = titulo;
     this.autor = autor;
     this.descricao = descricao;
@@ -24,29 +20,24 @@ export class Music {
     this.tempo = tempo;
   }
 
-  @Transform(({ value }) => value.toString())
-  _id: string;
+  @PrimaryColumn()
+  id: string;
 
-  @Prop({ unique: true })
-  musicId: string;
-
-  @Prop()
+  @Column()
   titulo: string;
 
-  @Prop()
+  @Column()
   autor: string;
 
-  @Prop()
+  @Column()
   descricao: string;
 
-  @Prop()
+  @Column()
   url: string;
 
-  @Prop()
+  @Column()
   tambnail: string;
 
-  @Prop()
+  @Column()
   tempo: string;
 }
-
-export const MusicSchema = SchemaFactory.createForClass(Music);

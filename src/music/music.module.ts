@@ -1,19 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Music, MusicSchema } from './entities/music.entity';
+import { DatabaseModule } from 'src/database/dataBase.module';
 import { MusicController } from './music.controller';
+import { musicProviders } from './music.providers';
 import { MusicService } from './music.service';
 
 @Module({
   controllers: [MusicController],
-  providers: [MusicService],
-  imports: [
-    MongooseModule.forFeature([
-      {
-        name: Music.name,
-        schema: MusicSchema,
-      },
-    ]),
-  ],
+  providers: [...musicProviders, MusicService],
+  imports: [DatabaseModule],
 })
 export class MusicModule {}

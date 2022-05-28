@@ -7,17 +7,12 @@ import {
   Patch,
   Post,
   Put,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import MongooseClassSerializerInterceptor from 'src/common/mongooseClassSerializer.interceptor';
-import { CreateMusicDto } from './dto/create-music.dto';
-import { UpdateMusicDto } from './dto/update-music.dto';
 import { Music } from './entities/music.entity';
 import { MusicService } from './music.service';
 
 @Controller('music')
-@UseInterceptors(MongooseClassSerializerInterceptor(Music))
 @ApiTags('musica')
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
@@ -28,8 +23,8 @@ export class MusicController {
   }
 
   @Post()
-  create(@Body() createMusicDto: CreateMusicDto) {
-    return this.musicService.create(createMusicDto);
+  create(@Body() music: Music) {
+    return this.musicService.create(music);
   }
 
   @Get()
@@ -39,20 +34,17 @@ export class MusicController {
 
   @Get(':musicId')
   async findOne(@Param('musicId') id: string) {
-    return this.musicService.findOne(id);
+    return this.musicService.findById(id);
   }
 
   @Patch(':musicId')
-  updateMapped(
-    @Param('musicId') id: string,
-    @Body() updateMusicDto: UpdateMusicDto,
-  ) {
-    return this.musicService.update(id, updateMusicDto);
+  updateMapped(@Param('musicId') id: string, @Body() music: Music) {
+    return this.musicService.update(id, music);
   }
 
   @Put(':musicId')
-  update(@Param('musicId') id: string, @Body() updateMusicDto: UpdateMusicDto) {
-    return this.musicService.update(id, updateMusicDto);
+  update(@Param('musicId') id: string, @Body() music: Music) {
+    return this.musicService.update(id, music);
   }
 
   @Delete(':musicId')
