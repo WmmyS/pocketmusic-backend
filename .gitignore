@@ -35,5 +35,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Credentials and Database informations
-#/config/development.env
-#/config/google-credentials.env
+/config

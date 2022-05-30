@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { Playlist } from 'src/playlist/entities/playlist.entity';
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('music')
 export class Music {
@@ -23,21 +25,30 @@ export class Music {
   @PrimaryColumn()
   id: string;
 
+  @ApiProperty({ type: () => String })
   @Column()
   titulo: string;
 
+  @ApiProperty({ type: () => String })
   @Column()
   autor: string;
 
+  @ApiProperty({ type: () => String })
   @Column()
   descricao: string;
 
+  @ApiProperty({ type: () => String })
   @Column()
   url: string;
 
+  @ApiProperty({ type: () => String })
   @Column()
   tambnail: string;
 
+  @ApiProperty({ type: () => String })
   @Column()
   tempo: string;
+
+  @ManyToMany(() => Playlist, (playlist) => playlist.musics)
+  playlists: Playlist[];
 }
